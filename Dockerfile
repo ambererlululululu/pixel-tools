@@ -7,8 +7,9 @@ COPY . .
 RUN npm run build
 
 FROM node:20-alpine
-RUN apk add --no-cache ffmpeg python3 py3-pip \
-    && pip3 install --break-system-packages yt-dlp
+RUN apk add --no-cache ffmpeg \
+    && wget -O /usr/local/bin/yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp
 WORKDIR /app
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
